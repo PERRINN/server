@@ -44,7 +44,7 @@ public class NewDevice implements RequestHandler<String, String> {
 
 	public NewDevice() {
 		// We have to extract the local credentials from the environment
-		// Because as a lambda function, there is no way to use a
+		// Because as a lambda function, there is no easy way to use a
 		// properties file
 
 		// Be aware that because Lambda is essentially run from a Docker container
@@ -53,8 +53,8 @@ public class NewDevice implements RequestHandler<String, String> {
 
 		this.conn = null;
 		this.connString = "jdbc:mysql://database.perrinnapp.net/appdata";
-		this.userId = null;
-		this.password = null;
+		this.userId = System.getenv("DB_USER");
+		this.password = System.getenv("DB_PASS");
 		this.stmt = null;
 	}
 	
@@ -81,7 +81,6 @@ public class NewDevice implements RequestHandler<String, String> {
 			// store in the DB and return to the user
 			Class.forName("com.mysql.jdbc.Driver");
 			this.conn = DriverManager.getConnection(this.connString, this.userId, this.password);
-//			this.conn.open();
 			this.stmt = this.conn.prepareStatement("insert into devices(deviceId,deviceKey) values(?,?)");
 			this.stmt.setString(1, input);
 			this.stmt.setString(2, this.keyData);
