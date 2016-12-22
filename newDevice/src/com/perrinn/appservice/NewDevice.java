@@ -81,7 +81,7 @@ public class NewDevice implements RequestHandler<String, String> {
 			// store in the DB and return to the user
 			Class.forName("com.mysql.jdbc.Driver");
 			this.conn = DriverManager.getConnection(this.connString, this.userId, this.password);
-			this.conn.open();
+//			this.conn.open();
 			this.stmt = this.conn.prepareStatement("insert into devices(deviceId,deviceKey) values(?,?)");
 			this.stmt.setString(1, input);
 			this.stmt.setString(2, this.keyData);
